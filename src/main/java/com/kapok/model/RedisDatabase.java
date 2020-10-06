@@ -2,8 +2,7 @@ package com.kapok.model;
 
 import lombok.Data;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Data
 public class RedisDatabase {
@@ -14,8 +13,28 @@ public class RedisDatabase {
         dictionary.put(key, value);
     }
 
+    public void hset(String key, String...values) {
+        Set<String> set = new HashSet<>();
+        for (String value : values) {
+            set.add(value);
+        }
+        dictionary.put(key, set);
+    }
+
+    public void rpush(String key, String...values) {
+        List<String> list = new ArrayList<>();
+        for (String value : values) {
+            list.add(value);
+        }
+        dictionary.put(key, list);
+    }
+
     public Object get(String key) {
         return dictionary.get(key);
+    }
+
+    public void delete(String key) {
+        dictionary.remove(key);
     }
 
 }

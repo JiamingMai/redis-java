@@ -21,10 +21,28 @@ public class CommandService {
         database.set(key, value);
     }
 
+    public void hset(String key, String...values) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        database.hset(key, values);
+    }
+
+    public void rpush(String key, String...values) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        database.rpush(key, values);
+    }
+
     public Object get(String key) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         return database.get(key);
+    }
+
+    public void delete(String key) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        database.delete(key);
     }
 
 }
