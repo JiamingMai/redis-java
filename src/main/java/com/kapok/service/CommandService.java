@@ -1,96 +1,120 @@
 package com.kapok.service;
 
+import com.alibaba.fastjson.JSON;
 import com.kapok.model.RedisDatabase;
 import com.kapok.model.RedisServer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.PrintWriter;
+
+@Slf4j
 @Service
 public class CommandService {
 
     @Autowired
     private RedisServer redisServer;
 
-    public void select(int databaseIndex) {
+    @Value("${service.command.rdb-save-path}")
+    private String rdbSavePath;
+
+    public synchronized void select(int databaseIndex) {
         redisServer.setSelectedDbIndex(databaseIndex);
     }
 
-    public void set(String key, String value) {
+    public synchronized void set(String key, String value) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.set(key, value);
     }
 
-    public void hset(String key, String...values) {
+    public synchronized void hset(String key, String...values) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.hset(key, values);
     }
 
-    public void rpush(String key, String...values) {
+    public synchronized void rpush(String key, String...values) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.rpush(key, values);
     }
 
-    public Integer exists(String key) {
+    public synchronized Integer exists(String key) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         return database.exists(key);
     }
 
-    public Object get(String key) {
+    public synchronized Object get(String key) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         return database.get(key);
     }
 
-    public void delete(String key) {
+    public synchronized void delete(String key) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.delete(key);
     }
 
-    public void pexpire(String key, int milliseconds) {
+    public synchronized void pexpire(String key, int milliseconds) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.pexpire(key, milliseconds);
     }
 
-    public void expire(String key, int seconds) {
+    public synchronized void expire(String key, int seconds) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.expire(key, seconds);
     }
 
-    public void pexpireat(String key, long msTimestamp) {
+    public synchronized void pexpireat(String key, long msTimestamp) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.pexpireat(key, msTimestamp);
     }
 
-    public void expireat(String key, long timestamp) {
+    public synchronized void expireat(String key, long timestamp) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.expireat(key, timestamp);
     }
 
-    public void persist(String key) {
+    public synchronized void persist(String key) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.persist(key);
     }
 
-    public Long pttl(String key) {
+    public synchronized Long pttl(String key) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         return database.pttl(key);
     }
 
-    public Long ttl(String key) {
+    public synchronized Long ttl(String key) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         return database.ttl(key);
+    }
+
+    public synchronized void save() {
+        String rdbContent = JSON.toJSONString(redisServer);
+        try (PrintWriter printWriter = new PrintWriter(new File(rdbSavePath))) {
+            printWriter.println(rdbContent);
+            printWriter.flush();
+        } catch (Exception e) {
+            log.error("encountered error when saving rdb. ", e);
+        }
+    }
+
+    public void bgsave() {
+        // TODO: implement this method
     }
 
 }

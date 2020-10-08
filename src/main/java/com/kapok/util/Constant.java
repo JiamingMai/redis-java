@@ -16,5 +16,7 @@ public final class Constant {
     public static final String PERSIST = "persist";
     public static final String PTTL = "pttl";
     public static final String TTL = "ttl";
+    public static final String SAVE = "save";
+    public static final String BGSAVE = "bgsave";
 
 }

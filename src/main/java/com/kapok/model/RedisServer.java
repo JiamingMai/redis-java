@@ -3,12 +3,13 @@ package com.kapok.model;
 import lombok.Data;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Repository
-public class RedisServer {
+public class RedisServer implements Serializable {
 
     private final int DEFAULT_DATABASE_NUM = 16;
 

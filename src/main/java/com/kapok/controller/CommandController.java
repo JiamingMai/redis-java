@@ -92,6 +92,8 @@ public class CommandController {
             case Constant.TTL:
                 key = params;
                 return commandService.ttl(key);
+            case Constant.SAVE:
+                commandService.save();
             default:
         }
         return "OK";

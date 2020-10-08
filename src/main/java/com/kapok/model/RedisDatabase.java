@@ -2,10 +2,11 @@ package com.kapok.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.*;
 
 @Data
-public class RedisDatabase {
+public class RedisDatabase implements Serializable {
 
     private Map<String, Object> dictionary = new HashMap<>();
 
