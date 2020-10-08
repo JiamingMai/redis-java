@@ -82,6 +82,16 @@ public class CommandController {
                 value = keyAndValues[1];
                 commandService.expireat(key, Long.valueOf(value));
                 break;
+            case Constant.PERSIST:
+                key = params;
+                commandService.persist(key);
+                break;
+            case Constant.PTTL:
+                key = params;
+                return commandService.pttl(key);
+            case Constant.TTL:
+                key = params;
+                return commandService.ttl(key);
             default:
         }
         return "OK";

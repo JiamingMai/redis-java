@@ -75,4 +75,22 @@ public class CommandService {
         database.expireat(key, timestamp);
     }
 
+    public void persist(String key) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        database.persist(key);
+    }
+
+    public Long pttl(String key) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        return database.pttl(key);
+    }
+
+    public Long ttl(String key) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        return database.ttl(key);
+    }
+
 }

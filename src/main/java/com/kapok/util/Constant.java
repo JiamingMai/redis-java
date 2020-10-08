@@ -13,5 +13,8 @@ public final class Constant {
     public static final String EXPIRE = "expire";
     public static final String PEXPIREAT = "pexpireat";
     public static final String EXPIREAT = "expireat";
+    public static final String PERSIST = "persist";
+    public static final String PTTL = "pttl";
+    public static final String TTL = "ttl";
 
 }

@@ -65,4 +65,24 @@ public class RedisDatabase {
         pexpireat(key, timestamp * 1000L);
     }
 
+    public void persist(String key) {
+        expires.remove(key);
+    }
+
+    public Long pttl(String key) {
+        if (!expires.containsKey(key)) {
+            return -1L;
+        }
+        long msTimestamp = expires.get(key);
+        long left = msTimestamp - System.currentTimeMillis();
+        return left;
+    }
+
+    public Long ttl(String key) {
+        if (!expires.containsKey(key)) {
+            return -1L;
+        }
+        return pttl(key) / 1000L;
+    }
+
 }
