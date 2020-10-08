@@ -25,9 +25,9 @@ public class CommandController {
                 commandService.select(selectedDbIndex);
                 break;
             case Constant.SET:
-                String[] keyAndValue = params.split(" ");
-                key = keyAndValue[0];
-                value = keyAndValue[1];
+                keyAndValues = params.split(" ");
+                key = keyAndValues[0];
+                value = keyAndValues[1];
                 commandService.set(key, value);
                 break;
             case Constant.HSET:
@@ -48,12 +48,40 @@ public class CommandController {
                 }
                 commandService.rpush(key, values);
                 break;
+            case Constant.EXISTS:
+                key = params;
+                return commandService.exists(key);
             case Constant.GET:
                 key = params;
                 return commandService.get(key);
             case Constant.DEL:
                 key = params;
                 commandService.delete(key);
+                break;
+            case Constant.PEXPIRE:
+                keyAndValues = params.split(" ");
+                key = keyAndValues[0];
+                value = keyAndValues[1];
+                commandService.expire(key, Integer.valueOf(value));
+                break;
+            case Constant.EXPIRE:
+                keyAndValues = params.split(" ");
+                key = keyAndValues[0];
+                value = keyAndValues[1];
+                commandService.expire(key, Integer.valueOf(value));
+                break;
+            case Constant.PEXPIREAT:
+                keyAndValues = params.split(" ");
+                key = keyAndValues[0];
+                value = keyAndValues[1];
+                commandService.pexpireat(key, Long.valueOf(value));
+                break;
+            case Constant.EXPIREAT:
+                keyAndValues = params.split(" ");
+                key = keyAndValues[0];
+                value = keyAndValues[1];
+                commandService.expireat(key, Long.valueOf(value));
+                break;
             default:
         }
         return "OK";

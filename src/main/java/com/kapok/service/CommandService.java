@@ -33,6 +33,12 @@ public class CommandService {
         database.rpush(key, values);
     }
 
+    public Integer exists(String key) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        return database.exists(key);
+    }
+
     public Object get(String key) {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
@@ -43,6 +49,30 @@ public class CommandService {
         int selectedDbIndex = redisServer.getSelectedDbIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.delete(key);
+    }
+
+    public void pexpire(String key, int milliseconds) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        database.pexpire(key, milliseconds);
+    }
+
+    public void expire(String key, int seconds) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        database.expire(key, seconds);
+    }
+
+    public void pexpireat(String key, long msTimestamp) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        database.pexpireat(key, msTimestamp);
+    }
+
+    public void expireat(String key, long timestamp) {
+        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
+        database.expireat(key, timestamp);
     }
 
 }
