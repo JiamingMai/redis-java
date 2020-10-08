@@ -19,6 +19,7 @@ public class CommandController {
         String value;
         String[] values;
         String[] keyAndValues;
+        commandService.requireNotSaving();
         switch (command) {
             case Constant.SELECT:
                 int selectedDbIndex = Integer.valueOf(params);
