@@ -18,7 +18,7 @@ public class TimeEventProcessor {
     @Autowired
     private RedisServer redisServer;
 
-    @Scheduled(cron = "* * * * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     public void cleanExpiredKeys() {
         long currentTimestamp = System.currentTimeMillis();
         for (RedisDatabase database : redisServer.getDatabases()) {

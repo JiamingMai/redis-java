@@ -36,6 +36,14 @@ public class RedisDatabase implements Serializable {
         return dictionary.get(key);
     }
 
+    public boolean isExpire(String key) {
+        if (!expires.containsKey(key)) {
+            return false;
+        }
+        long expireTimestamp = expires.get(key);
+        return expireTimestamp > System.currentTimeMillis() ? false : true;
+    }
+
     public void delete(String key) {
         dictionary.remove(key);
     }
@@ -48,12 +56,12 @@ public class RedisDatabase implements Serializable {
         }
     }
 
-    public void pexpire(String key, int milliseconds) {
+    public void pexpire(String key, Long milliseconds) {
         pexpireat(key, System.currentTimeMillis() + milliseconds);
     }
 
-    public void expire(String key, int seconds) {
-        pexpire(key, seconds * 1000);
+    public void expire(String key, Long seconds) {
+        pexpire(key, seconds * 1000L);
     }
 
     public void pexpireat(String key, long msTimestamp) {
