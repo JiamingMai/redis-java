@@ -1,6 +1,7 @@
 package com.kapok.service.command;
 
 import com.alibaba.fastjson.JSON;
+import com.kapok.model.RedisClient;
 import com.kapok.model.RedisDatabase;
 import com.kapok.model.RedisServer;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +14,13 @@ public class SaveCommand implements Command<String> {
 
     // the receiver of this command
     private RedisServer redisServer;
+    private RedisClient redisClient;
 
     private String rdbSavePath;
 
-    public SaveCommand(RedisServer redisServer, String rdbSavePath) {
+    public SaveCommand(RedisServer redisServer, RedisClient redisClient, String rdbSavePath) {
         this.redisServer = redisServer;
+        this.redisClient = redisClient;
         this.rdbSavePath = rdbSavePath;
     }
 

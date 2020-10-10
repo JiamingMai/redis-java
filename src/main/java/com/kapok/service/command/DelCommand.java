@@ -1,5 +1,6 @@
 package com.kapok.service.command;
 
+import com.kapok.model.RedisClient;
 import com.kapok.model.RedisDatabase;
 import com.kapok.model.RedisServer;
 
@@ -7,17 +8,19 @@ public class DelCommand implements Command<String> {
 
     // the receiver of this command
     private RedisServer redisServer;
+    private RedisClient redisClient;
 
     private String key;
 
-    public DelCommand(RedisServer redisServer, String key) {
+    public DelCommand(RedisServer redisServer, RedisClient redisClient, String key) {
         this.redisServer = redisServer;
+        this.redisClient = redisClient;
         this.key = key;
     }
 
     @Override
     public String execute() {
-        int selectedDbIndex = redisServer.getSelectedDbIndex();
+        int selectedDbIndex = redisClient.getDatabaseIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.delete(key);
         return "OK";

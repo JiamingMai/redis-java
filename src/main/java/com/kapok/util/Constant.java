@@ -18,5 +18,6 @@ public final class Constant {
     public static final String TTL = "ttl";
     public static final String SAVE = "save";
     public static final String BGSAVE = "bgsave";
+    public static final String INFO = "info";
 
 }

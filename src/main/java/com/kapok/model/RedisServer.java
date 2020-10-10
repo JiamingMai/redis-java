@@ -20,6 +20,10 @@ public class RedisServer implements Serializable {
 
     @JSONField(serialize = false)
     @Transient
+    private List<RedisClient> redisClients = new ArrayList<>();
+
+    @JSONField(serialize = false)
+    @Transient
     @Autowired
     private RedisServerState redisServerState;
 
