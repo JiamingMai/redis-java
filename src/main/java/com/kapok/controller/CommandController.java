@@ -14,7 +14,7 @@ public class CommandController {
     @Autowired
     private CommandService commandService;
 
-    @PostMapping("/{command}")
+    @PostMapping("/command/{command}")
     @ResponseBody
     public Object receiveCommand(@RequestHeader(value = "X-Redis-Client-Id", required = false) String clientId,
                                  @PathVariable String command,

@@ -32,6 +32,9 @@ public class CommandService implements InitializingBean {
     private CommandBufferManager commandBufferManager;
 
     @Autowired
+    private SlaveManager slaveManager;
+
+    @Autowired
     private RedisServer redisServer;
 
     @Value("${service.command.rdb-save-path}")
@@ -45,7 +48,7 @@ public class CommandService implements InitializingBean {
             clients.add(redisClient);
         } else {
             for (RedisClient client : clients) {
-                if (client.getClientId().equals(clientId)) {
+                if (client.getClientRunId().equals(clientId)) {
                     redisClient = client;
                 }
             }
@@ -59,13 +62,15 @@ public class CommandService implements InitializingBean {
         // add this command to buffer for AOF
         String commandFullStr = commandStr + " " + params;
         commandBufferManager.addCommandRecord(commandFullStr);
+        // sync command to redis slaves
+        slaveManager.syncCommandToSlaves(commandStr, params);
         return res;
     }
 
     private Object executeCommandInternal(RedisClient redisClient, String commandStr, String params) {
         requireNotSaving();
         synchronized (this) {
-            Command command = commandFactory.createCommand(redisServer, redisClient, commandStr, params);
+            Command command = commandFactory.createCommand(redisServer, redisClient, slaveManager, commandStr, params);
             return command.execute();
         }
     }

@@ -5,14 +5,14 @@ import lombok.Data;
 @Data
 public class RedisClient {
 
-    private String clientId;
+    private String clientRunId;
 
     private Integer databaseIndex = 0;
 
     private RedisDatabase selectedDatabase;
 
-    public RedisClient(String clientId) {
-        this.clientId = clientId;
+    public RedisClient(String clientRunId) {
+        this.clientRunId = clientRunId;
     }
 
 }
