@@ -29,6 +29,9 @@ public class CommandService implements InitializingBean {
     private CommandFactory commandFactory;
 
     @Autowired
+    private CommandBufferManager commandBufferManager;
+
+    @Autowired
     private RedisServer redisServer;
 
     @Value("${service.command.rdb-save-path}")
@@ -53,6 +56,9 @@ public class CommandService implements InitializingBean {
     public Object executeCommand(String clientId, String commandStr, String params) {
         RedisClient redisClient = getRedisClient(clientId);
         Object res = executeCommandInternal(redisClient, commandStr, params);
+        // add this command to buffer for AOF
+        String commandFullStr = commandStr + " " + params;
+        commandBufferManager.addCommandRecord(commandFullStr);
         return res;
     }
 

@@ -19,5 +19,7 @@ public final class Constant {
     public static final String SAVE = "save";
     public static final String BGSAVE = "bgsave";
     public static final String INFO = "info";
+    public static final String SLAVEOF = "slaveof";
+    public static final String SYNC = "sync";
 
 }

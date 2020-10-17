@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.kapok.model.RedisServer;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 
 @Slf4j
@@ -22,14 +24,19 @@ public class BgSaveCommand implements Command<String> {
 
     @Override
     public String execute() {
+        executeInternal();
+        return "OK";
+    }
+
+    public String executeInternal() {
         String rdbContent = JSON.toJSONString(redisServer);
-        try (PrintWriter printWriter = new PrintWriter(new File(rdbSavePath))) {
-            printWriter.println(rdbContent);
-            printWriter.flush();
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(rdbSavePath)))) {
+            bufferedWriter.write(rdbContent);
+            bufferedWriter.flush();
         } catch (Exception e) {
             log.error("encountered error when saving rdb. ", e);
         }
-        return "OK";
+        return rdbContent;
     }
 
     private void setRedisSavingState() {

@@ -2,7 +2,6 @@ package com.kapok.service.command;
 
 import com.kapok.model.RedisClient;
 import com.kapok.model.RedisServer;
-import com.kapok.service.CommandService;
 import com.kapok.util.Constant;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +23,9 @@ public class CommandFactory {
         String value;
         String[] values;
         String[] keyAndValues;
+        String[] hostAndPort;
+        String host;
+        Integer port;
         Command command = null;
         switch (commandStr) {
             case Constant.SELECT:
@@ -90,6 +92,18 @@ public class CommandFactory {
                 return new TtlCommand(redisServer, redisClient, key);
             case Constant.SAVE:
                 return new SaveCommand(redisServer, redisClient, rdbSavePath);
+            case Constant.BGSAVE:
+                return new BgSaveCommand(redisServer, rdbSavePath);
+            case Constant.SLAVEOF:
+                hostAndPort = params.split(" ");
+                host = hostAndPort[0];
+                port = Integer.valueOf(hostAndPort[1]);
+                return new SlaveOfCommand(redisServer, redisClient, host, port);
+            case Constant.SYNC:
+                hostAndPort = params.split(" ");
+                host = hostAndPort[0];
+                port = Integer.valueOf(hostAndPort[1]);
+                return new SyncCommand(redisServer, redisClient, host, port);
             default:
         }
         return command;
