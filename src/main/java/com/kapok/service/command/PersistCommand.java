@@ -23,6 +23,7 @@ public class PersistCommand implements Command<String> {
         int selectedDbIndex = redisClient.getDatabaseIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.persist(key);
+        redisServer.updateCommandIndex();
         return "OK";
     }
 

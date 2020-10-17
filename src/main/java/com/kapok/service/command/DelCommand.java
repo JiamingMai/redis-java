@@ -23,6 +23,7 @@ public class DelCommand implements Command<String> {
         int selectedDbIndex = redisClient.getDatabaseIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.delete(key);
+        redisServer.updateCommandIndex();
         return "OK";
     }
 

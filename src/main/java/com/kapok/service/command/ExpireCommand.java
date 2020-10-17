@@ -26,6 +26,7 @@ public class ExpireCommand implements Command<String> {
         int selectedDbIndex = redisClient.getDatabaseIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.expire(key, seconds);
+        redisServer.updateCommandIndex();
         return "OK";
     }
 

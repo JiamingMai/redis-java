@@ -30,7 +30,6 @@ public class SlaveOfCommand implements Command<String> {
 
     @Override
     public String execute() {
-
         if (NetworkUtil.isLocalHost(host) && port.equals(redisServer.getRedisServerState().getPort())) {
             long start = System.currentTimeMillis();
             SyncCommand syncCommand = new SyncCommand(redisServer, redisClient, redisServer.getRedisServerState().getHost(), redisServer.getRedisServerState().getPort());
@@ -47,6 +46,7 @@ public class SlaveOfCommand implements Command<String> {
             HttpEntity<String> objectHttpEntity = new HttpEntity<>(param, headers);
             RedisServer copiedRedisServer = restTemplate.postForObject(url, objectHttpEntity, RedisServer.class);
             redisServer.setDatabases(copiedRedisServer.getDatabases());
+            redisServer.setCommandIndex(copiedRedisServer.getCommandIndex());
             return "OK";
         }
     }

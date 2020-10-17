@@ -27,6 +27,7 @@ public class SetCommand implements Command<String> {
         int selectedDbIndex = redisClient.getDatabaseIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.set(key, value);
+        redisServer.updateCommandIndex();
         return "OK";
     }
 

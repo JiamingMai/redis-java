@@ -26,6 +26,7 @@ public class HSetCommand implements Command<String> {
         int selectedDbIndex = redisClient.getDatabaseIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.hset(key, values);
+        redisServer.updateCommandIndex();
         return "OK";
     }
 

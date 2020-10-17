@@ -26,6 +26,7 @@ public class PExpireAtCommand implements Command<String> {
         int selectedDbIndex = redisClient.getDatabaseIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.pexpire(key, milliseconds);
+        redisServer.updateCommandIndex();
         return "OK";
     }
 

@@ -21,6 +21,7 @@ public class SelectCommand implements Command<String> {
     public String execute() {
         redisClient.setDatabaseIndex(databaseIndex);
         redisClient.setSelectedDatabase(redisServer.getDatabases().get(databaseIndex));
+        redisServer.updateCommandIndex();
         return "OK";
     }
 

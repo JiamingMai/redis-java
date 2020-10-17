@@ -26,6 +26,7 @@ public class RPushCommand implements Command<String> {
         int selectedDbIndex = redisClient.getDatabaseIndex();
         RedisDatabase database = redisServer.getDatabases().get(selectedDbIndex);
         database.rpush(key, values);
+        redisServer.updateCommandIndex();
         return "OK";
     }
 
