@@ -36,6 +36,15 @@ public class SlaveManager {
     }
 
     public synchronized void syncCommandToSlaves(String command, String params) {
+        // filter the commands
+        switch (command) {
+            case "slaveof":
+            case "save":
+            case "bgsave":
+                return;
+            default:
+        }
+
         String serverRunId = redisServer.getRedisServerState().getRunId();
         for (RedisSlave slave : slavesMap.values()) {
             sendCommand(serverRunId, slave.getHost(), slave.getPort(), command, params);
@@ -57,7 +66,7 @@ public class SlaveManager {
         // send PING heartbeat to every slave and get the heartbeat information from them
         for (RedisSlave slave : slavesMap.values()) {
             try {
-            HeartbeatInfo heartbeatInfo = restTemplate.getForObject("http://"  + slave.getHost() + ":" + slave.getPort() + "/v1/hearbeat", HeartbeatInfo.class);
+            HeartbeatInfo heartbeatInfo = restTemplate.getForObject("http://"  + slave.getHost() + ":" + slave.getPort() + "/v1/heartbeat", HeartbeatInfo.class);
             slave.setCommandIndex(heartbeatInfo.getCommandIndex());
             slave.setLastHeartbeatTimestamp(System.currentTimeMillis());
             } catch (Exception e) {
