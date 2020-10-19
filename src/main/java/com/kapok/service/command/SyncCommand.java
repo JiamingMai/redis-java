@@ -37,6 +37,7 @@ public class SyncCommand implements Command<RedisServer> {
 
         // register slave
         RedisSlave slave = new RedisSlave();
+        slave.setRunId(redisClient.getClientRunId());
         slave.setHost(host);
         slave.setPort(port);
         slave.setCommandIndex(redisServer.getCommandIndex().get());
