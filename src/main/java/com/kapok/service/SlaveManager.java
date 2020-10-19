@@ -39,6 +39,7 @@ public class SlaveManager {
         // filter the commands
         switch (command) {
             case "slaveof":
+            case "sync":
             case "save":
             case "bgsave":
                 return;
