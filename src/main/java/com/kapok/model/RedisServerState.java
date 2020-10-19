@@ -17,6 +17,7 @@ public class RedisServerState {
 
     private String runId = UUID.randomUUID().toString();
 
+    @Value("${service.redis-server-host}")
     private String host;
 
     @Value("${server.port}")
