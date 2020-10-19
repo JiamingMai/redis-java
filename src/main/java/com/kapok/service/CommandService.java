@@ -53,6 +53,10 @@ public class CommandService implements InitializingBean {
                 }
             }
         }
+        if (null == redisClient) {
+            redisClient = new RedisClient(clientId);
+            clients.add(redisClient);
+        }
         return redisClient;
     }
 
