@@ -100,12 +100,12 @@ public class CommandFactory {
                 hostAndPort = params.split(" ");
                 host = hostAndPort[0];
                 port = Integer.valueOf(hostAndPort[1]);
-                return new SlaveOfCommand(redisServer, redisClient, slaveManager, host, port);
+                return new SlaveOfCommand(redisServer, redisClient, host, port);
             case Constant.SYNC:
                 hostAndPort = params.split(" ");
                 host = hostAndPort[0];
                 port = Integer.valueOf(hostAndPort[1]);
-                return new SyncCommand(redisServer, redisClient, host, port);
+                return new SyncCommand(redisServer, redisClient, slaveManager, host, port);
             default:
         }
         return command;
