@@ -1,8 +1,12 @@
 package com.kapok.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class NetworkUtil {
 
     public static boolean isLocalHost(String host) {
@@ -13,7 +17,7 @@ public class NetworkUtil {
     }
 
     public static List<String> getAllLocalHostIP() {
-        List<String> ret = null;
+        List<String> ret = new ArrayList<>();
         try {
             String hostName = InetAddress.getLocalHost().getHostName();
             if (hostName.length() > 0) {
@@ -25,7 +29,7 @@ public class NetworkUtil {
                 }
             }
         } catch (Exception ex) {
-            ret = null;
+            log.error("encountered error at getAllLocalHostIP()", ex);
         }
         return ret;
     }
