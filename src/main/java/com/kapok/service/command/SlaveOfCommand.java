@@ -33,13 +33,8 @@ public class SlaveOfCommand implements Command<String> {
     @Override
     public String execute() {
         if (NetworkUtil.isLocalHost(host) && port.equals(redisServer.getRedisServerState().getPort())) {
-            long start = System.currentTimeMillis();
-            SyncCommand syncCommand = new SyncCommand(redisServer, redisClient, redisServer.getRedisServerState().getHost(), redisServer.getRedisServerState().getPort());
-            syncCommand.execute();
             // notice that we don't need to set data received from itself
-            long end = System.currentTimeMillis();
-            log.info((end - start) + " ms");
-            return "OK";
+            throw new RuntimeException("cannot slaveof yourself");
         } else {
             String url = "http://" + host + ":" + port + "/v1/command/" + Constant.SYNC;
             HttpHeaders headers = new HttpHeaders();
