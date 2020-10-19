@@ -25,6 +25,7 @@ public class RedisServerState {
 
     private boolean saving;
 
+    /*
     public String getHost() {
         try {
             InetAddress ip4 = Inet4Address.getLocalHost();
@@ -34,5 +35,6 @@ public class RedisServerState {
             return null;
         }
     }
+    */
 
 }
